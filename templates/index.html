@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Oguz Garden</title>
+    {% include 'static.html' %}
+</head>
+<body>
+    <a href="{{ url_for('admin') }}" class="admin">admin</a>
+    <div class="container">
+        <div id="map">
+            <a href="" class="location" id="my-location">
+                <svg width="62" height="62" viewBox="0 0 62 62" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="31" cy="31" r="31" fill="white"/>
+                    <circle cx="30.9917" cy="30.9914" r="5.2521" fill="#1E1B1B"/>
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M19.0395 19.0393C19.4873 18.5914 20.2134 18.5914 20.6613 19.0393L23.1371 21.5151C23.15 21.5279 23.1624 21.541 23.1745 21.5543C25.296 19.7952 28.0204 18.7377 30.9917 18.7377C33.963 18.7377 36.6874 19.7952 38.8089 21.5544C38.8211 21.5411 38.8335 21.528 38.8464 21.5151L41.3223 19.0393C41.7701 18.5914 42.4962 18.5914 42.9441 19.0393C43.3919 19.4871 43.3919 20.2132 42.9441 20.6611L40.4682 23.1369C40.4554 23.1497 40.4423 23.1622 40.429 23.1743C42.1887 25.296 43.2466 28.0208 43.2466 30.9926C43.2466 33.9638 42.1892 36.688 40.4302 38.8095C40.4431 38.8212 40.4557 38.8333 40.4681 38.8457L42.944 41.3216C43.3918 41.7695 43.3918 42.4956 42.944 42.9434C42.4961 43.3913 41.77 43.3913 41.3222 42.9434L38.8463 40.4675C38.834 40.4552 38.8219 40.4426 38.8102 40.4298C36.6885 42.1896 33.9636 43.2475 30.9917 43.2475C28.0197 43.2475 25.2949 42.1896 23.1732 40.4298C23.1615 40.4426 23.1495 40.4552 23.1371 40.4675L20.6612 42.9434C20.2134 43.3913 19.4873 43.3913 19.0394 42.9434C18.5916 42.4956 18.5916 41.7695 19.0394 41.3216L21.5153 38.8457C21.5277 38.8333 21.5403 38.8213 21.5532 38.8096C19.7942 36.688 18.7368 33.9638 18.7368 30.9926C18.7368 28.0207 19.7946 25.2959 21.5544 23.1742C21.5411 23.1621 21.5281 23.1497 21.5153 23.1369L19.0395 20.6611C18.5916 20.2132 18.5916 19.4871 19.0395 19.0393ZM30.9917 41.3362C36.7043 41.3362 41.3352 36.7052 41.3352 30.9926C41.3352 25.28 36.7043 20.649 30.9917 20.649C25.2791 20.649 20.6481 25.28 20.6481 30.9926C20.6481 36.7052 25.2791 41.3362 30.9917 41.3362Z" fill="#333333"/>
+                    </svg>
+            </a>
+            {% include 'footer.html' %}
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            // Initialize the map
+            var map = L.map('map', {
+                zoomControl: true,
+                maxZoom: 20,
+                minZoom: 10
+            }).setView([38.021867, 58.694035], 17);
+    
+            // Add a tile layer to the map
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors',
+                maxZoom: 20,
+                minZoom: 10
+            }).addTo(map);
+    
+            // Define a custom tree icon
+            var treeIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/2917/2917995.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32],
+                popupAnchor: [0, -32]
+            });
+    
+            // Fetch existing tree statuses
+            async function fetchTreeStatuses() {
+                try {
+                    const response = await fetch('http://localhost:3000/api/treestatus');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch tree statuses');
+                    }
+                    return await response.json();
+                } catch (error) {
+                    console.error(error);
+                    return [];
+                }
+            }
+    
+            // Post new tree status
+            async function postTreeStatus(data) {
+                try {
+                    const response = await fetch('http://localhost:3000/api/treestatus', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+                    return await response.json();
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+    
+            // Add markers from the API
+            const treeStatuses = await fetchTreeStatuses();
+            treeStatuses.forEach((treeStatus) => {
+                const popupContent = `
+                    <div>
+                        <h4>Tree ID: ${treeStatus.treeId}</h4>
+                        <p><b>Sickness:</b> ${treeStatus.sickness || 'N/A'}</p>
+                        <p><b>Description:</b> ${treeStatus.description || 'No description'}</p>
+                        <p><b>Is Average:</b> ${treeStatus.isAverage ? 'Yes' : 'No'}</p>
+                        <p><b>Exists:</b> ${treeStatus.isExist ? 'Yes' : 'No'}</p>
+                    </div>
+                `;
+                L.marker([treeStatus.tree.lat, treeStatus.tree.lng], { icon: treeIcon })
+                    .addTo(map)
+                    .bindPopup(popupContent);
+            });
+    
+            // Add a click event for posting new tree statuses
+            map.on('click', async function (e) {
+                const lat = e.latlng.lat;
+                const lng = e.latlng.lng;
+    
+                // Create a popup form
+                const popupForm = `
+                    <form id="treeForm">
+                        <div>
+                            <label for="sickness">Sickness:</label>
+                            <input type="text" id="sickness" name="sickness" placeholder="Sickness">
+                        </div>
+                        <div>
+                            <label for="description">Description:</label>
+                            <textarea id="description" name="description" placeholder="Enter description"></textarea>
+                        </div>
+                        <div>
+                            <label for="isAverage">Is Average:</label>
+                            <select id="isAverage" name="isAverage">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="isExist">Exists:</label>
+                            <select id="isExist" name="isExist">
+                                <option value="true">Yes</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+                        <button type="button" id="submitTreeStatus">Submit</button>
+                    </form>
+                `;
+    
+                // Open the popup
+                const popup = L.popup()
+                    .setLatLng(e.latlng)
+                    .setContent(popupForm)
+                    .openOn(map);
+    
+                // Submit form data
+                document.getElementById('submitTreeStatus').addEventListener('click', async () => {
+                    const sickness = document.getElementById('sickness').value;
+                    const description = document.getElementById('description').value;
+                    const isAverage = document.getElementById('isAverage').value === 'true';
+                    const isExist = document.getElementById('isExist').value === 'true';
+    
+                    const data = {
+                        sickness,
+                        description,
+                        isAverage,
+                        isExist,
+                        treeId: `${Date.now()}`, // Example unique ID
+                    };
+    
+                    await postTreeStatus(data);
+    
+                    // Add a new marker to the map
+                    L.marker([lat, lng], { icon: treeIcon })
+                        .addTo(map)
+                        .bindPopup(`
+                            <div>
+                                <h4>Tree ID: ${data.treeId}</h4>
+                                <p><b>Sickness:</b> ${data.sickness}</p>
+                                <p><b>Description:</b> ${data.description}</p>
+                                <p><b>Is Average:</b> ${data.isAverage ? 'Yes' : 'No'}</p>
+                                <p><b>Exists:</b> ${data.isExist ? 'Yes' : 'No'}</p>
+                            </div>
+                        `);
+    
+                    map.closePopup();
+                });
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>

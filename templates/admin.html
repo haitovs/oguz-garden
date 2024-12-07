@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oguz Garden - Admin Dashboard</title>
+    {% include 'static.html' %}
+
+    <!-- Bootstrap CSS (CDN) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      integrity="sha384-Q6E9RHvbLyFJQuv1Zqzj67cM0UpfZEOCN+4H51roXegkRMp5dyKtbscIbZ7B05fJf"
+      crossorigin="anonymous"
+    />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/styles/admin.css" />
+  </head>
+  <body class="bg-light">
+    <div class="container-fluid bg-dark text-white py-3">
+      <div class="row">
+        <div class="col-md-6 d-flex">
+          <div class="admin-hello">
+            <h1 class="page-title mb-0">Hello,</h1>
+            <h1 class="mb-0" style="color: #4effad; font-size: 28px; font-weight: bold">Admin</h1>
+          </div>
+          <svg
+              class="notification-bell ms-3"
+              width="31"
+              height="31"
+              viewBox="0 0 31 31"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M18.095 3.29404C17.2773 3.02183 16.4042 2.87497 15.5 2.87497C11.3137 2.87497 7.79689 6.02269 7.33459 10.1834L7.00934 13.1106C6.85838 14.4693 6.41613 15.7794 5.71278 16.9517L4.96615 18.1961L4.94566 18.2302C4.67256 18.6854 4.43727 19.0775 4.2745 19.4055C4.11063 19.7357 3.9515 20.1299 3.95557 20.5704C3.96323 21.4011 4.39819 22.1693 5.10659 22.6033C5.48223 22.8334 5.90212 22.8998 6.26957 22.9292C6.63456 22.9583 7.09184 22.9583 7.62259 22.9583H7.66247H23.3375H23.3774C23.9082 22.9583 24.3655 22.9583 24.7304 22.9292C25.0979 22.8998 25.5178 22.8334 25.8934 22.6033C26.6018 22.1693 27.0368 21.4011 27.0444 20.5704C27.0485 20.1299 26.8894 19.7357 26.7255 19.4055C26.5628 19.0775 26.3275 18.6854 26.0544 18.2303L26.0544 18.2303L26.0339 18.1961L25.2872 16.9517C24.8257 16.1825 24.4766 15.3539 24.2485 14.4912C23.9226 14.539 23.5892 14.5638 23.25 14.5638C22.8895 14.5638 22.5355 14.5358 22.1901 14.4819C22.4552 15.7135 22.9214 16.8959 23.5723 17.9807L24.3189 19.2251C24.6183 19.724 24.8111 20.047 24.934 20.2945C25.0222 20.4723 25.0409 20.5484 25.0443 20.5632C25.0394 20.6965 24.97 20.8191 24.8582 20.8918C24.8437 20.8966 24.7688 20.9197 24.5711 20.9355C24.2956 20.9575 23.9194 20.9583 23.3375 20.9583H7.66247C7.08058 20.9583 6.70442 20.9575 6.42894 20.9355C6.2312 20.9197 6.15631 20.8966 6.14181 20.8918C6.03006 20.8191 5.96064 20.6965 5.95574 20.5632C5.95916 20.5484 5.97784 20.4722 6.06602 20.2945C6.18887 20.047 6.38176 19.724 6.68114 19.2251L7.42777 17.9807C8.2791 16.5618 8.81438 14.976 8.99711 13.3314L9.32236 10.4042C9.67211 7.25642 12.3328 4.87497 15.5 4.87497C16.0124 4.87497 16.5116 4.93731 16.9898 5.05514C17.2677 4.41059 17.6421 3.81747 18.095 3.29404ZM21.6913 5.68973C21.0967 6.1403 20.7031 6.84236 20.6691 7.63755C21.0818 8.25456 21.3878 8.95142 21.5593 9.70326C22.0124 10.0958 22.6035 10.3333 23.25 10.3333C23.3959 10.3333 23.5389 10.3212 23.6782 10.298L23.6654 10.1834C23.4741 8.4616 22.7597 6.91329 21.6913 5.68973Z"
+                fill="white"
+              />
+              <path
+                d="M11.7571 22.8169C11.9778 24.0528 12.4643 25.145 13.1411 25.9239C13.8178 26.7028 14.647 27.125 15.5 27.125C16.353 27.125 17.1822 26.7028 17.859 25.9239C18.5357 25.145 19.0222 24.0528 19.243 22.8169"
+                stroke="white"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center">
+          <form class="d-flex align-items-center" action="/search" method="post">
+            <div class="input-group">
+              <input type="text" name="search_input" class="form-control" placeholder="Search..." aria-label="Search" />
+              <button type="submit" class="btn btn-success">
+                <img src="static/images/search.png" alt="Search" style="width: 20px; height: 20px" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container my-4">
+      <!-- Add Category Form -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <form
+            action="/categories"
+            method="post"
+            class="add-category d-flex flex-column flex-sm-row align-items-center gap-2"
+          >
+            <label for="category" class="form-label mb-0">Add Category:</label>
+            <input type="text" name="category" id="category" class="form-control w-auto" placeholder="New Category" />
+            <button type="submit" class="btn btn-primary">Add</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Category List -->
+      <div class="row mb-4">
+        <div class="col-12">
+          <h2>Categories</h2>
+          <ul class="list-group">
+            {% for category in categories %}
+            <li class="list-group-item">{{ category['title'] }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Statistics Section -->
+      <div class="row gy-4">
+        <div class="col-12">
+          <h2>Statistics</h2>
+        </div>
+
+        <!-- Example Bar Chart -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">Sales Bar Chart</div>
+            <div class="card-body">
+              <canvas id="barChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Example Doughnut Chart -->
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">Category Distribution</div>
+            <div class="card-body">
+              <canvas id="doughnutChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS (CDN) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-S5wtcC0bL6LCIKXf5ILM42wWrWqXU9N+2YBNS5FsSYyfVZOf5vwufz6fTdApzpgP"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Chart.js (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+      // Example Data for Bar Chart
+      const barCtx = document.getElementById("barChart").getContext("2d");
+      const barChart = new Chart(barCtx, {
+        type: "bar",
+        data: {
+          labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+          datasets: [
+            {
+              label: "Sales",
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: "rgba(78, 255, 173, 0.6)",
+              borderColor: "rgba(78, 255, 173, 1)",
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+
+      // Example Data for Doughnut Chart
+      const doughnutCtx = document.getElementById("doughnutChart").getContext("2d");
+      const doughnutChart = new Chart(doughnutCtx, {
+        type: "doughnut",
+        data: {
+          labels: ["Fruits", "Vegetables", "Herbs", "Flowers"],
+          datasets: [
+            {
+              label: "Category Distribution",
+              data: [30, 50, 10, 10],
+              backgroundColor: [
+                "rgba(78, 255, 173, 0.6)",
+                "rgba(78, 173, 255, 0.6)",
+                "rgba(255, 173, 78, 0.6)",
+                "rgba(255, 78, 173, 0.6)",
+              ],
+              borderColor: [
+                "rgba(78, 255, 173, 1)",
+                "rgba(78, 173, 255, 1)",
+                "rgba(255, 173, 78, 1)",
+                "rgba(255, 78, 173, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+        },
+      });
+    </script>
+  </body>
+</html>

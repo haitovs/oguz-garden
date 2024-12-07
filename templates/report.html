@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% include 'static.html' %}
+</head>
+<body>
+    <form action="/report" class="report">
+        <h1 class="form-title">Report</h1>
+        <label for="">Username</label><br>
+        <input type="text" name="" id=""><br>
+        <label for="">Category</label><br>
+        <input type="text" name="" id=""><br>
+        <label for="">Description</label><br>
+        <input type="text" name="" id=""><br>
+        <label for="">Date</label><br>
+        <input type="text" name="" id=""><br>
+        <div class="report-process">
+            <input type="button" value="Cancel" onclick="history.back()" class="cancel-report"/>
+            <input type="submit" value="Send" class="send-report">
+        </div>
+    </form>
+</body>
+</html>

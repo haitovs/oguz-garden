@@ -1,0 +1,37 @@
+/* Typography and Branding */
+.page-title {
+    color: white;
+    font-size: 28px;
+    margin-bottom: 0;
+  }
+  
+  .admin-name {
+    color: #4effad;
+    font-size: 28px;
+    font-weight: bold;
+    margin-left: 0.5rem;
+  }
+  
+  /* Header & Admin Greeting */
+  .admin-hello {
+    display: flex;
+    align-items: center;
+    border: 1px solid red;
+  }
+  
+  /* Notification Icon */
+  .notification-bell {
+    margin-left: auto;
+    cursor: pointer;
+  }
+  
+  /* Category Form */
+  .add-category {
+    margin-top: 2rem;
+  }
+  
+  /* Additional Utilities (if needed)
+     Add custom spacing or overrides here if any elements 
+     need adjustment beyond what Bootstrap provides.
+  */
+  
